@@ -12,7 +12,7 @@ class AdditionalExam < ActiveRecord::Base
 
 
   def validate
-    errors.add(:minimum_marks, "can't be more than max marks.") \
+    errors.add(:minimum_marks, "não pode ser maior que a pontuação máxima.") \
       if minimum_marks and maximum_marks and minimum_marks > maximum_marks
   end
 
@@ -34,7 +34,7 @@ private
   def update_exam_event
     if self.event.nil?
       new_event = Event.create do |e|
-        e.title       = "Additional Exam"
+        e.title       = "Exame Adicional"
         e.description = "#{self.additional_exam_group.name} for #{self.subject.batch.full_name} , Subject : #{self.subject.name}"
         e.start_date  = self.start_time
         e.end_date    = self.end_time

@@ -21,11 +21,11 @@ class Student < ActiveRecord::Base
   after_save :create_user_account
 
   def validate
-    errors.add(:date_of_birth, "can't be a future date.") if self.date_of_birth >= Date.today \
+    errors.add(:date_of_birth, "não pode ser uma data no futuro.") if self.date_of_birth >= Date.today \
       unless self.date_of_birth.nil?
-    errors.add(:gender, 'attribute is invalid.') unless ['m', 'f'].include? self.gender.downcase \
+    errors.add(:gender, 'valor é inválido.') unless ['m', 'f'].include? self.gender.downcase \
       unless self.gender.nil?
-    errors.add(:admission_no, 'can\'t be zero') if self.admission_no=='0'
+    errors.add(:admission_no, 'não pode ser zero') if self.admission_no=='0'
       
   end
 

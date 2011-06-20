@@ -20,7 +20,7 @@ class Batch < ActiveRecord::Base
   named_scope :deleted, :conditions => { :is_deleted => true }
 
   def validate
-    errors.add(:start_date, 'should be before end date.') \
+    errors.add(:start_date, 'deve ser antes da data final.') \
       if self.start_date > self.end_date \
       if self.start_date and self.end_date
   end

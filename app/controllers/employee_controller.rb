@@ -8,7 +8,7 @@ class EmployeeController < ApplicationController
     @categories = EmployeeCategory.find(:all)
     @category = EmployeeCategory.new(params[:category])
     if request.post? and @category.save
-      flash[:notice] = "Employee category created"
+      flash[:notice] = "Categoria de Funcionário criada"
       redirect_to :controller => "employee", :action => "add_category"
     end
   end
@@ -16,7 +16,7 @@ class EmployeeController < ApplicationController
   def edit_category
     @category = EmployeeCategory.find(params[:id])
     if request.post? and @category.update_attributes(params[:category])
-      flash[:notice] = "Employee category updated"
+      flash[:notice] = "Categoria de Funcionário atualizada"
       redirect_to :action => "add_category"
     end
   end
@@ -27,10 +27,10 @@ class EmployeeController < ApplicationController
     if employees.empty? and category_position.empty?
       EmployeeCategory.find(params[:id]).destroy
       @categories = EmployeeCategory.find :all
-      flash[:notice]="Successfully deleted!"
+      flash[:notice]="Excluído com sucesso!"
       redirect_to :action => "add_category"
     else
-      flash[:notice]="Unable to delete!"
+      flash[:notice]="Não foi possível excluir!"
       redirect_to :action => "add_category"
     end
   end
@@ -40,7 +40,7 @@ class EmployeeController < ApplicationController
     @categories = EmployeeCategory.find(:all,:order => "name asc")
     @position = EmployeePosition.new(params[:position])
     if request.post? and @position.save
-      flash[:notice] = "Employee position created"
+      flash[:notice] = "Posição de Funcionário criada"
       redirect_to :controller => "employee", :action => "add_position"
     end
   end
@@ -49,7 +49,7 @@ class EmployeeController < ApplicationController
     @categories = EmployeeCategory.find(:all)
     @position = EmployeePosition.find(params[:id])
     if request.post? and @position.update_attributes(params[:position])
-      flash[:notice] = "Employee position updated"
+      flash[:notice] = "Posição de Funcionário atualizada"
       redirect_to :action => "add_position"
     end
 
@@ -61,10 +61,10 @@ class EmployeeController < ApplicationController
     if employees.empty?
       EmployeePosition.find(params[:id]).destroy
       @positions = EmployeePosition.find :all
-      flash[:notice]="Successfully deleted!"
+      flash[:notice]="Excluído com sucesso!"
       redirect_to :action => "add_position"
     else
-      flash[:notice]="Unable to delete!"
+      flash[:notice]="Não foi possível excluir!"
       redirect_to :action => "add_position"
     end
   end
@@ -73,7 +73,7 @@ class EmployeeController < ApplicationController
     @departments = EmployeeDepartment.find(:all)
     @department = EmployeeDepartment.new(params[:department])
     if request.post? and @department.save
-      flash[:notice] = "Employee department created"
+      flash[:notice] = "Departamento de Funcionário criado"
       redirect_to :controller => "employee", :action => "add_department"
     end
   end
@@ -81,7 +81,7 @@ class EmployeeController < ApplicationController
   def edit_department
     @department = EmployeeDepartment.find(params[:id])
     if request.post? and @department.update_attributes(params[:department])
-      flash[:notice] = "Employee department updated"
+      flash[:notice] = "Departamento de Funcionário atualizado"
       redirect_to :action => "add_department"
     end
   end
@@ -91,13 +91,15 @@ class EmployeeController < ApplicationController
     if employees.empty?
       EmployeeDepartment.find(params[:id]).destroy
       @departments = EmployeeDepartment.find :all
-      flash[:notice]="Successfully deleted!"
+      flash[:notice]="Excluído com sucesso!"
       redirect_to :action => "add_department"
     else
-      flash[:notice]="Unable to delete!"
+      flash[:notice]="Não foi possível excluir!"
       redirect_to :action => "add_department"
     end
   end
+
+  #TODO: Verificar a melhor tradução aqui:
 
   def add_grade
     @grades = EmployeeGrade.find(:all)
@@ -121,13 +123,15 @@ class EmployeeController < ApplicationController
     if employees.empty?
       EmployeeGrade.find(params[:id]).destroy
       @grades = EmployeeGrade.find :all
-      flash[:notice]="Successfully deleted!"
+      flash[:notice]="Excluído com sucesso!"
       redirect_to :action => "add_grade"
     else
-      flash[:notice]="Unable to delete!"
+      flash[:notice]="Não foi possível excluir!"
       redirect_to :action => "add_grade"
     end
   end
+
+  #TODO: Verificar a melhor tradução aqui:
 
   def add_bank_details
     @bank_details = BankField.find(:all)
@@ -150,10 +154,10 @@ class EmployeeController < ApplicationController
     if employees.empty?
       BankField.find(params[:id]).destroy
       @bank_details = BankField.find(:all)
-      flash[:notice]="Successfully deleted!"
+      flash[:notice]="Excluído com sucesso!"
       redirect_to :action => "add_bank_details"
     else
-      flash[:notice]="Unable to delete!"
+      flash[:notice]="Não foi possível excluir!"
       redirect_to :action => "add_bank_details"
     end
   end
@@ -162,7 +166,7 @@ class EmployeeController < ApplicationController
     @additional_details = AdditionalField.find(:all)
     @additional_field = AdditionalField.new(params[:additional_field])
     if request.post? and @additional_field.save
-      flash[:notice] = "Additional field created"
+      flash[:notice] = "Campo adicional criado"
       redirect_to :controller => "employee", :action => "add_additional_details"
     end
   end
@@ -170,7 +174,7 @@ class EmployeeController < ApplicationController
   def edit_additional_details
     @additional_details = AdditionalField.find(params[:id])
     if request.post? and @additional_details.update_attributes(params[:additional_details])
-      flash[:notice] = "Additional details updated"
+      flash[:notice] = "Detalhes adicionais atualizado"
       redirect_to :action => "add_additional_details"
     end
   end
@@ -179,10 +183,10 @@ class EmployeeController < ApplicationController
     if employees.empty?
       AdditionalField.find(params[:id]).destroy
       @additional_details = AdditionalField.find(:all)
-      flash[:notice]="Successfully deleted!"
+      flash[:notice]="Excluído com sucesso!"
       redirect_to :action => "add_additional_details"
     else
-      flash[:notice]="Unable to delete!"
+      flash[:notice]="Não foi possível excluir!"
       redirect_to :action => "add_additional_details"
     end
   end
@@ -219,6 +223,9 @@ class EmployeeController < ApplicationController
           Employee.update(@employee.id, :status => false)
         end
 
+
+        #TODO: Atualizar o domínio aqui !!
+
         @user = User.new
         @user.first_name = @employee.first_name
         @user.last_name = @employee.last_name
@@ -228,7 +235,7 @@ class EmployeeController < ApplicationController
         @user.email = "noreply" + @employee.employee_number.to_s + "@fedena.com"
         @user.save
         
-        flash[:notice] = "Employee #{@employee.first_name} record saved"
+        flash[:notice] = "Dados do funcionário #{@employee.first_name} salvos"
         redirect_to :controller =>"employee" ,:action => "admission2", :id => @employee.id
       end
     end

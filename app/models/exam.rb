@@ -15,7 +15,7 @@ class Exam < ActiveRecord::Base
   accepts_nested_attributes_for :exam_scores
 
   def validate
-    errors.add(:minimum_marks, "can't be more than max marks.") \
+    errors.add(:minimum_marks, "não pode ser maior que pontuação máxima.") \
       if minimum_marks and maximum_marks and minimum_marks > maximum_marks
   end
 
