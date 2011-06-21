@@ -268,7 +268,7 @@ class EmployeeController < ApplicationController
         Employee.update(@employee.id, :status => false)
       end
 
-      flash[:notice] = "Employee #{@employee.first_name} general information updated"
+      flash[:notice] = "Informações do funcionário #{@employee.first_name} atualizados"
       redirect_to :controller =>"employee" ,:action => "profile", :id => @employee.id
     end
   end
@@ -277,7 +277,7 @@ class EmployeeController < ApplicationController
     @nationalities = Country.all
     @employee = Employee.find(params[:id])
     if request.post? and @employee.update_attributes(params[:employee])
-      flash[:notice] = "Employee #{@employee.first_name} personal information updated"
+      flash[:notice] = "Informações do funcionário #{@employee.first_name} atualizados"
       redirect_to :controller =>"employee" ,:action => "profile", :id => @employee.id
     end
   end
@@ -289,11 +289,14 @@ class EmployeeController < ApplicationController
       sms_setting = SmsSetting.new()
       if sms_setting.application_sms_active and sms_setting.employee_sms_active
         recipient = ["#{@employee.mobile_phone}"]
-        message = "Joining Info for #{@employee.first_name}. Username: #{@employee.employee_number}, Password: #{@employee.employee_number}123. Please change your password after logging in."
+        
+        #TODO: Verificar versão em português abaixo (original: "Joining Info for..."
+        
+        message = "Obtendo informações para #{@employee.first_name}. Nome de Usuário: #{@employee.employee_number}, Senha: #{@employee.employee_number}123. Por favor mude sua senha após logar."
         sms = SmsManager.new(message,recipient)
         sms.send_sms
       end
-      flash[:notice] = "address and contact details saved for #{ @employee.first_name}"
+      flash[:notice] = "endereço e detalhes do contato salvos para #{ @employee.first_name}"
       redirect_to :action => "admission3", :id => @employee.id
     end
   end  
@@ -302,7 +305,7 @@ class EmployeeController < ApplicationController
     @employee = Employee.find(params[:id])
     @countries = Country.find(:all)
     if request.post? and @employee.update_attributes(params[:employee])
-      flash[:notice] = "Employee address  details saved for #{ @employee.first_name}"
+      flash[:notice] = "Detalhes do endereço do funcionário salvos para #{ @employee.first_name}"
       redirect_to :action => "profile", :id => @employee.id
     end
   end
@@ -310,7 +313,7 @@ class EmployeeController < ApplicationController
   def edit_contact
     @employee = Employee.find(params[:id])
     if request.post? and @employee.update_attributes(params[:employee])
-      flash[:notice] = "Employee contact details saved for #{ @employee.first_name}"
+      flash[:notice] = "Detalhes de contato do funcionário salvos para #{ @employee.first_name}"
       redirect_to :action => "profile", :id => @employee.id
     end
   end
@@ -327,7 +330,7 @@ class EmployeeController < ApplicationController
         EmployeeBankDetail.create(:employee_id => params[:id],
           :bank_field_id => k,:bank_info => v['bank_info'])
       end
-      flash[:notice] = "Bank details saved for #{@employee.first_name}"
+      flash[:notice] = "Dados bancários salvos para #{@employee.first_name}"
       redirect_to :action => "admission3_1", :id => @employee.id
     end
   end
@@ -345,7 +348,7 @@ class EmployeeController < ApplicationController
           EmployeeBankDetail.create(:employee_id=>@employee.id,:bank_field_id=>k,:bank_info=>v['bank_info'])
         end
       end
-      flash[:notice] = "Employee #{@employee.first_name} bank details updated"
+      flash[:notice] = "Dados bancários do funcionário #{@employee.first_name} atualizados"
       redirect_to :action => "profile", :id => @employee.id
     end
   end
@@ -361,7 +364,7 @@ class EmployeeController < ApplicationController
         EmployeeAdditionalDetail.create(:employee_id => params[:id],
           :additional_field_id => k,:additional_info => v['additional_info'])
       end
-      flash[:notice] = "Bank details saved for #{@employee.first_name}"
+      flash[:notice] = "Dados bancários salvos para #{@employee.first_name}"
       redirect_to :action => "edit_privilege", :id => @employee.employee_number
     end
   end
@@ -391,7 +394,7 @@ class EmployeeController < ApplicationController
           EmployeeAdditionalDetail.create(:employee_id=>@employee.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
         end
       end
-      flash[:notice] = "Employee #{@employee.first_name} additional details updated"
+      flash[:notice] = "Dados adicionais do funcionário #{@employee.first_name} atualizados"
       redirect_to :action => "profile", :id => @employee.id
     end
   end
@@ -426,7 +429,7 @@ class EmployeeController < ApplicationController
     if request.post?
       @employee = Employee.find(params[:id])
       Employee.update(@employee, :reporting_manager_id => params[:employee][:reporting_manager_id])
-      flash[:notice]="Reporting manager successfully changed"
+      flash[:notice]="Gerenciador de Relatórios alterado com sucesso"
       redirect_to :action => "profile", :id=>@employee.id
     end
   end
@@ -636,8 +639,13 @@ class EmployeeController < ApplicationController
     @user = current_user
     privilege = Privilege.find(14)
     finance_manager = privilege.users
+    
+    #TODO: Verificar a tradução aqui:
+    
     subject = " Payslip generated"
     body = "Payslip has been generated for "+@employee.first_name+" "+@employee.last_name+". Kindly approve this request"
+    
+    
     finance_manager.each do |f|
       Reminder.create(:sender=>@user.id, :recipient=>f.id, :subject=> subject,
         :body => body, :is_read=>false, :is_deleted_by_sender=>false,:is_deleted_by_recipient=>false)
@@ -665,7 +673,7 @@ class EmployeeController < ApplicationController
         individual_payslip_category.each do |c|
           IndividualPayslipCategory.update(c.id, :salary_date=>start_date)
         end
-        flash[:notice] = "#{@employee.first_name} salary slip generated for #{params[:salary_date]}"
+        flash[:notice] = "#{@employee.first_name} - holerith gerado para a data #{params[:salary_date]}"
         redirect_to :controller => "employee", :action => "profile", :id=> @employee.id
       else #else for if payslip_exists == []
         individual_payslips_generated = IndividualPayslipCategory.find_all_by_employee_id_and_salary_date(@employee.id,nil)
@@ -674,7 +682,8 @@ class EmployeeController < ApplicationController
             i.delete
           end
         end
-        flash[:notice] = "<b>ERROR:</b>#{@employee.first_name} salary slip  already generated for #{params[:salary_date]}"
+        
+        flash[:notice] = "<b>ERRO:</b>#{@employee.first_name} - holerith já gerado para a data #{params[:salary_date]}"
         redirect_to :controller => "employee", :action => "profile", :id=> @employee.id
       end
     end
@@ -867,8 +876,13 @@ class EmployeeController < ApplicationController
     @user = current_user
     finance_manager = find_finance_managers
     finance = Configuration.find_by_config_value("Finance")
-    subject = " Payslip generated"
+    
+    #TODO: Verificar tradução aqui Payslip -> Folha de Pagamento
+    
+    subject = " Folha de Pagamento gerada"
+    
     body = "Payslip has been generated for the particular month. Kindly approve this request"
+    
     salary_date = Date.parse(params[:salary_date])
     start_date = salary_date - ((salary_date.day - 1).days)
     end_date = start_date + 1.month
@@ -910,7 +924,10 @@ class EmployeeController < ApplicationController
         end
       end
     end
-    render :text => "<p>Salary slip generated for the month: #{salary_date.strftime("%B")}.<br/><b>NOTE:</b> Employees whose salary was generated manually, their salary slip was not generated by this process.</p>"
+    
+    #TODO: Melhorar esta mensagem:
+    
+    render :text => "<p>Holerith gerado para o mês: #{salary_date.strftime("%B")}.<br/><b>Obs:</b> Funcionários cujo salário tenha sido gerado manualmente não serão gerados por este processo.</p>"
   end
 
   def payslip_revert_date_select
@@ -938,9 +955,11 @@ class EmployeeController < ApplicationController
           end
         end
       end
+      
+      #TODO: Traduzir:
       render :text=> "<p>Salary slip reverted for the month: #{salary_date.strftime("%B")}.</p>"
     else
-      render :text=>"<p>Please select a month...</p>"
+      render :text=>"<p>Por favor selecione um mês...</p>"
     end
   end
 
@@ -1354,7 +1373,7 @@ class EmployeeController < ApplicationController
   def change_to_former
     @employee = Employee.find(params[:id])
     if request.post?
-      flash[:notice]="Successfully deleted employee!"
+      flash[:notice]="Funcionário excluído com sucesso!"
       @employee.archive_employee(params[:remove][:status_description])
       redirect_to :action => "hr"
     end
@@ -1364,7 +1383,7 @@ class EmployeeController < ApplicationController
     employee = Employee.find(params[:id])
     user = User.destroy_all(:username => employee.employee_number) unless user.nil?
     Employee.destroy(params[:id])
-    flash[:notice] = "All records have been deleted for employee with employee no. #{employee.employee_number}."
+    flash[:notice] = "Todos os registros foram excluídos para funcionário número #{employee.employee_number}."
     redirect_to :controller => 'user', :action => 'dashboard'
   end
 
@@ -1419,6 +1438,9 @@ class EmployeeController < ApplicationController
     dates.each do |d|
       d.approve(current_user.id)
     end
+    
+    #TODO: Traduzir:
+    
     flash[:notice] = 'Payslip has been approved'
     redirect_to :action => "hr"
 

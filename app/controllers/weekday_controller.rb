@@ -1,6 +1,9 @@
 class WeekdayController < ApplicationController
   before_filter :login_required
   filter_access_to :all
+  
+  #TODO: Realizar tradução aqui !
+  
   def index
     @batches = Batch.active
     @weekdays = Weekday.default

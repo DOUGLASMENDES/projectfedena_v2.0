@@ -6,6 +6,8 @@ class EmployeeAttendanceController < ApplicationController
   prawnto :prawn => {:left_margin => 25, :right_margin => 25}
 
   filter_access_to :all
+  
+  #TODO: Finalizar tradução desta classe !
 
   def add_leave_types
     @leave_types = EmployeeLeaveType.find(:all, :order => "name ASC")
