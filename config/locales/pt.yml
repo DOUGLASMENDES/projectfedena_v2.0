@@ -1,0 +1,153 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+pt:
+  menu:
+    calendar: 'Calendário'
+    examination: 'Exames'
+    news: 'Avisos'
+    event_creation: 'Criação de Eventos'
+    human_resource: 'Recursos Humanos'
+    finance: 'Financeiro'
+    users: 'Usuários'
+  login:
+    help: 'Ajuda!'
+    login: 'Entrar'
+    forgot_pwd: 'Socorro! Esqueci minha senha!'
+    username: 'Usuário'
+    pwd: 'Senha'
+    remember_me: 'Lembrar'
+  user:
+    pwd_changed_successfully: 'Senha alterado com sucesso.'
+    pwd_changed_failed: 'A senha está incorreta. Tente novamente.'
+    pwd_old_pwd_incorrect: 'A senha antiga que você digitou está incorreta. Por favor digite a senha válida.'    
+    pwd_fields_cannot_be_blank: 'Os campos de senha devem ser preenchidos!'
+    pwd_updated_successfully: 'A senha foi confirmada com sucesso!'
+    pwd_confirmation_failed: 'A senha está incorreta. Tente novamente.'
+    account_created: 'Conta de usuário criada!'
+    account_not_created: 'Conta de usuário não criada!'
+    account_deleted: 'Conta de usuário excluída!'
+    account_updated: 'Conta de usuário atualizada!'
+    pwd_reset_link_emailed: "Link para redefinir a senha enviado para %{email}"
+    pwd_reset_no_user_with_email: "Nenhum usuário possui o e-mail %{email}"
+    welcome: 'Welcome, '    
+    invalid_user_pwd: 'Nome de usuário ou senha inválidos' 
+    logged_out: 'Saiu do sistema'
+    profile_not_found: 'Perfil de usuário não encontrado.' 
+    reset_time_expired: 'Tempo expirado para redefinir'
+    invalid_reset_link: 'Link para redefinir senha inválido'
+    pwd_reset_successfully: 'Senha redefinida com sucesso. Use a nova senha para entrar.'
+    pwd_reset_confirmation_failed: 'Senha inválida. Por favor digite a nova senha.'
+    pwd_reset_invalid_link: 'Você seguiu um link inválido. Por favor tente novamente.'
+    edit_role_updated: 'Papél atualizado.'
+  application:
+    not_allowed_access_page: 'Perdão, você não está autorizado a acessar esta página.'
+    config_sett_hr_not_allowed: 'Perdão, você não está autorizado a acessar esta página.'
+    config_sett_finance_not_allowed: 'Perdão, você não está autorizado a acessar esta página.'
+    protected_other_stud_not_allowed: 'Você não tem permissão para visualizar esta informação.'    
+    protected_other_emp_not_allowed: 'Você não tem permissão para visualizar esta informação.'
+    protected_view_reminders_not_allowed: 'Você não tem permissão para visualizar esta informação.'    
+    protect_sent_reminders_not_allowed: 'Você não tem permissão para visualizar esta informação.'    
+    protect_leave_dashboard_not_allowed: 'Acesso negado'
+    protect_applied_leave_not_allowed: 'Acesso negado!'    
+    protect_manager_leave_application_view_not_allowed: 'Acesso negado!'   
+  additional_exam:
+    name_cant_be_blank: 'Nome do exame não pode ficar em branco'
+    exam_scheduled_reminder_subj: "Exame adicional agendado"
+    exam_scheduled_reminder_body: "%{exam_group_name} has been scheduled  <br/> Please view calendar for more details"
+    timetable_published: "%{exam_group_name} exam Timetable has been published."
+    exam_published: "%{exam_group_name} exam result has been published."
+    sms_sett_notice_schedule_no = "Exam schedule published, No sms was sent as Sms setting was not activated"
+    sms_sett_notice_exam_no = "Exam result published, No sms was sent as Sms setting was not activated"
+    sms_sett_notice_schedule = "Exam schedule published"
+    sms_sett_notice_exam = "Exam result published"
+    reminder_result_subj = "Result Published"
+    reminder_result_body = "%{exam_group_name} result has been published  <br/> Please view reports for your result"
+    no_exam_notice = "Exam scheduling not done yet."   
+  additional_exam_group:
+    successfuly_saved: "Additional Exam Group successfuly saved."
+    successfuly_updated_exam_group: 'Updated additional exam group successfully.'
+  additional_exams:
+    scores_updated: 'Additional exam scores updated.'
+    new_exam_created: "New exam created successfully."
+    updated_details: 'Updated additional exam details successfully.'
+  archived_student:
+    all_records_deleted: "All records have been deleted for student with admission no. %{student_admission_no}."
+    student_marks = "Student's marks"
+    class_average = "Class average"
+    legend_subjects = "Subjects"
+    legend_marks = "Marks"
+    legend_examination_name = "Examination name"
+    legend_examination_marks = "Marks"
+    legend_academic_year = "Academic year"
+    legend_total_marks = "Total marks"
+  attendances:
+    student_absent_message: "%{student_first_name} %{student_last_name} is absent on %{period_entry_month_date}"
+  batches:
+    created: 'Batch created successfully.'
+    updated: 'Updated batch details successfully.'
+    fill_all_fields: "Please fill all fields"
+    deleted: 'Batch deleted successfully.'
+    unable_to_delete: 'Unable to delete Batch. Please delete all Students first.'
+    unable_to_delete_subj_first: 'Unable to delete Batch. Please delete all Subjects first.'
+  batch_transfers:
+    students_transferred: 'Trasferred students sucessfully.'
+    students_graduated: "Graduated selected students successfully."
+    assign_previous_batch_subject_error: "%{subject_name}  has been added to batch:%{batch_name}"
+    assign_previous_batch_subject_div_error: "%{batch_name} Already has the subject with name %{subject_name}"
+    subject_added_to_batch: " The subject %{subject_name}  has been added to Batch %{batch_name}"
+    batch_already_has_subject: "Batch %{batch_name} already has a subject with name %{subject_name}"
+    subjects_assigned: "Subjects have been assigned."
+    errors_found: "Following errors were found :"
+  configuration:
+    invalid_extension: 'Invalid Extention. Image must be .JPG'
+    file_too_large: 'File too large. File size should be less than 1 MB'
+    settings_saved: 'Settings has been saved'
+  courses:
+    saved: 'Created course sucessfully.'
+    updated: 'Updated course details successfully.'
+    deleted: "Course deleted successfully."
+    unable_to_delete: "Unable to Delete. Please remove exising batches and students."
+  elective_groups:
+    created: 'New elective group created.'
+    updated: 'New elective group created.'
+    deleted: 'Deleted elective group.'
+  employee_attendance:
+    leave_type_saved: "Employee leave type saved"
+    leave_type_updated: "Leave type updated"
+    attendance_registered: "attendance registered"
+    leave_app_created: "Leave application created"
+    leave_approved: "Leave approved for %{employee_first_name} from %{applied_leave_start_date} to %{applied_leave_end_date}"
+    leave_denied: "Leave denied for %{employee_first_name} from %{applied_leave_start_date} to %{applied_leave_end_date}"
+    cancel_application: "Leave application deleted"
+  employee:
+    category_created: "Employee category created"
+    category_updated: "Employee category updated"
+    category_deleted: "Successfully deleted!"
+    category_unable_to_delete: "Unable to delete!"
+    position_created: "Employee position created"
+    position_edited: "Employee position updated"
+    position_deleted: "Successfully deleted!"
+    position_unable_to_delete: "Unable to delete!"
+    department_created: "Employee department created"
+    department_updated: "Employee department updated"
+    department_deleted: "Successfully deleted!"
+    department_unable_to_delete: "Unable to delete!"
+    grade_created: "Employee grade created"
+    grade_updated: "Employee grade updated"
+    grade_deleted: "Successfully deleted!"
+    grade_unable_to_delete: "Unable to delete!"
+    bank_details_created: "Bank field created"
+    bank_details_updated: "Bank details updated"
+    bank_details_deleted: "Successfully deleted!"
+    bank_details_unable_to_delete: "Unable to delete!"
+
+
+
+
+
+
+
+
+
+    
