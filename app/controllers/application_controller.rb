@@ -5,9 +5,7 @@ class ApplicationController < ActionController::Base
   
   before_filter { |c| Authorization.current_user = c.current_user }
   before_filter :message_user
-  #before_filter :set_user_language
-  
-
+  before_filter :set_user_language
 
   def initialize
     @title = 'Fedena'
@@ -27,11 +25,12 @@ class ApplicationController < ActionController::Base
   end
 
   def permission_denied
-    flash[:notice] = "Perdão, você não está autorizado a acessar esta página."
+    flash[:notice] = t('application.not_allowed_access_page') 
     redirect_to :controller => 'user', :action => 'dashboard'
   end
   
   protected
+    
   def login_required
     redirect_to '/' unless session[:user_id]
   end
@@ -40,7 +39,7 @@ class ApplicationController < ActionController::Base
     hr = Configuration.find_by_config_value("HR")
     if hr.nil?
       redirect_to :controller => 'user', :action => 'dashboard'
-      flash[:notice] = "Perdão, você não está autorizado a acessar esta página."
+      flash[:notice] = t('application.config_sett_hr_not_allowed') 
     end
   end
 
@@ -50,7 +49,7 @@ class ApplicationController < ActionController::Base
     finance = Configuration.find_by_config_value("Finance")
     if finance.nil?
       redirect_to :controller => 'user', :action => 'dashboard'
-      flash[:notice] = "Perdão, você não está autorizado a acessar esta página."
+      flash[:notice] = t('application.config_sett_finance_not_allowed') 
     end
   end
 
@@ -62,7 +61,7 @@ class ApplicationController < ActionController::Base
     if current_user.student?
       student = Student.find_by_admission_no(current_user.username)
       unless params[:id].to_i == student.id or params[:student].to_i == student.id
-        flash[:notice] = "Você não tem permissão para visualizar esta informação."
+        flash[:notice] = t('application.protected_other_stud_not_allowed') 
         redirect_to :controller=>"user", :action=>"dashboard"
       end
     end
@@ -78,7 +77,7 @@ class ApplicationController < ActionController::Base
       #    end
       #    unless privilege.include?('9') or privilege.include?('14') or privilege.include?('17') or privilege.include?('18') or privilege.include?('19')
       unless params[:id].to_i == employee.id
-        flash[:notice] = 'Você não tem permissão para visualizar esta informação.'
+        flash[:notice] = t('application.protected_other_emp_not_allowed')
         redirect_to :controller=>"user", :action=>"dashboard"
       end
     end
@@ -89,7 +88,7 @@ class ApplicationController < ActionController::Base
   def protect_view_reminders
     reminder = Reminder.find(params[:id2])
     unless reminder.recipient == current_user.id
-      flash[:notice] = 'Você não tem permissão para visualizar esta informação.'
+      flash[:notice] = t('application.protected_view_reminders_not_allowed')
       redirect_to :controller=>"reminder", :action=>"index"
     end
   end
@@ -97,7 +96,7 @@ class ApplicationController < ActionController::Base
   def protect_sent_reminders
     reminder = Reminder.find(params[:id2])
     unless reminder.sender == current_user.id
-      flash[:notice] = 'Você não tem permissão para visualizar esta informação.'
+      flash[:notice] = t('application.protect_sent_reminders_not_allowed')
       redirect_to :controller=>"reminder", :action=>"index"
     end
   end
@@ -107,7 +106,7 @@ class ApplicationController < ActionController::Base
     employee = Employee.find(params[:id])
     employee_user = employee.user
     unless employee_user.id == current_user.id
-      flash[:notice] = "Acesso negado"
+      flash[:notice] = t('application.protect_leave_dashboard_not_allowed')
       redirect_to :controller=>"user", :action=>"dashboard"
     end
   end
@@ -117,7 +116,7 @@ class ApplicationController < ActionController::Base
     applied_employee = applied_leave.employee
     applied_employee_user = applied_employee.user
     unless applied_employee_user.id == current_user.id
-      flash[:notice]="Acesso negado!"
+      flash[:notice]= t('application.protect_applied_leave_not_allowed') 
       redirect_to :controller=>"user", :action=>"dashboard"
     end
   end
@@ -128,13 +127,14 @@ class ApplicationController < ActionController::Base
     applied_employees_manager = Employee.find(applied_employee.reporting_manager_id)
     applied_employees_manager_user = applied_employees_manager.user
     unless applied_employees_manager_user.id == current_user.id
-      flash[:notice]="Acesso negado!"
+      flash[:notice] = t('application.protect_manager_leave_application_view_not_allowed') 
       redirect_to :controller=>"user", :action=>"dashboard"
     end
   end
 
-  #   private
-  #    def set_user_language
-  #      #I18n.locale = 'es'
-  #    end
+  private
+  
+  def set_user_language
+    I18n.locale = 'en'
+  end
 end

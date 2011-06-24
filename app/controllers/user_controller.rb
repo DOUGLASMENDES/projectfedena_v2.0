@@ -78,13 +78,13 @@ class UserController < ApplicationController
           @user.update_attributes(:password => @user.password,
             :role => @user.role_name
           )
-          flash[:notice] = 'Senha alterado com sucesso.'
+          flash[:notice] = t('user.pwd_changed_successfully')
           redirect_to :action => 'dashboard'
         else
-          flash[:warn_notice] = '<p>A senha está incorreta. Tente novamente.</p>'
+          flash[:warn_notice] = '<p>' + t('user.pwd_changed_failed') + '</p>'
         end
       else
-        flash[:warn_notice] = '<p>A senha antiga que você digitou está incorreta. Por favor digite a senha válida.</p>'
+        flash[:warn_notice] = '<p>' + t('user.pwd_old_pwd_incorrect') + '</p>'
       end
     end
   end
@@ -94,17 +94,17 @@ class UserController < ApplicationController
 
     if request.post?
       if params[:user][:new_password]=='' and params[:user][:confirm_password]==''
-        flash[:warn_notice]= "<p>Os campos de senha devem ser preenchidos!</p>"
+        flash[:warn_notice]= "<p>" + t('user.pwd_fields_cannot_be_blank') + "</p>"
       else
         if params[:user][:new_password] == params[:user][:confirm_password]
           user.password = params[:user][:new_password]
           user.update_attributes(:password => user.password,
             :role => user.role_name
           )
-          flash[:notice]= "A senha foi confirmada com sucesso!"
+          flash[:notice]= t('user.pwd_updated_successfully') 
           redirect_to :action=>"edit", :id=>user.username
         else
-          flash[:warn_notice] = '<p>A senha está incorreta. Tente novamente.</p>'
+          flash[:warn_notice] = '<p>' + t('user.pwd_confirmation_failed') + '</p>'
         end
       end
 
@@ -132,17 +132,17 @@ class UserController < ApplicationController
           @employee.joining_date =  Date.today - 5.year
           @employee.save
         end
-        flash[:notice] = 'User account created!'
+        flash[:notice] = t('user.account_created')
         redirect_to :controller => 'user', :action => 'edit', :id => @user.username
       else
-        flash[:notice] = 'Conta de usuário não criada!'
+        flash[:notice] = t('user.account_not_created') 
       end
     end
   end
 
   def delete
     @user = User.find_by_username(params[:id]).destroy
-    flash[:notice] = 'Conta de usuário excluída!'
+    flash[:notice] = t('user.account_deleted') 
     redirect_to :controller => 'user'
   end
 
@@ -159,7 +159,7 @@ class UserController < ApplicationController
     @user = User.find_by_username(params[:id])
     @current_user = current_user
     if request.post? and @user.update_attributes(params[:user])
-      flash[:notice] = 'Conta de usuário atualizada!'
+      flash[:notice] = t('user.account_updated') 
       redirect_to :controller => 'user', :action => 'profile', :id => @user.username
     end
   end
@@ -175,10 +175,10 @@ class UserController < ApplicationController
         user.role = user.role_name
         user.save(false)
         UserNotifier.deliver_forgot_password(user)
-        flash[:notice] = "Link para resetar a senha enviado para #{user.email}"
+        flash[:notice] = t('user.pwd_reset_link_emailed', :email => user.email)
         redirect_to :action => "index"
       else
-        flash[:notice] = "Nenhum usuário possui o e-mail #{params[:reset_password][:email]}"
+        flash[:notice] = t('user.pwd_reset_no_user_with_email', :email => params[:reset_password][:email] )
       end
     end
   end
@@ -190,17 +190,17 @@ class UserController < ApplicationController
       user = User.find_by_username @user.username
       if user and User.authenticate?(@user.username, @user.password)
         session[:user_id] = user.id
-        flash[:notice] = "Bem-vindo, #{user.first_name} #{user.last_name}!"
+        flash[:notice] = t('user.welcome') + "#{user.first_name} #{user.last_name}!"
         redirect_to :controller => 'user', :action => 'dashboard'
       else
-        flash[:notice] = 'Nome de usuário ou senha inválidos'
+        flash[:notice] = t('user.invalid_user_pwd')
       end
     end
   end
 
   def logout
     session[:user_id] = nil
-    flash[:notice] = 'Saiu do sistema'
+    flash[:notice] = t('user.logged_out') 
     redirect_to :controller => 'user', :action => 'login'
   end
 
@@ -212,7 +212,7 @@ class UserController < ApplicationController
     @employee = Employee.find_by_employee_number(@user.username)
     @student = Student.find_by_admission_no(@user.username)
     if @user.nil?
-      flash[:notice] = 'Perfil de usuário não encontrado.'
+      flash[:notice] = t('user.profile_not_found') 
       redirect_to :action => 'dashboard'
     end
   end
@@ -223,11 +223,11 @@ class UserController < ApplicationController
       if user.reset_password_code_until > Time.now
         redirect_to :action => 'set_new_password', :id => user.reset_password_code
       else
-        flash[:notice] = 'Tempo expirado para resetar'
+        flash[:notice] = t('user.reset_time_expired') 
         redirect_to :action => 'index'
       end
     else
-      flash[:notice]= 'Link para resetar senha inválido'
+      flash[:notice]= t('user.invalid_reset_link') 
       redirect_to :action => 'index'
     end
   end
@@ -250,14 +250,14 @@ class UserController < ApplicationController
           user.update_attributes(:password => user.password, :reset_password_code => nil, :reset_password_code_until => nil, :role => user.role_name)
           #User.update(user.id, :password => params[:set_new_password][:new_password],
            # :reset_password_code => nil, :reset_password_code_until => nil)
-          flash[:notice] = 'Senha resetada com sucesso. Use a nova senha para entrar.'
+          flash[:notice] = t('user.pwd_reset_successfully') 
           redirect_to :action => 'index'
         else
-          flash[:notice] = 'Senha inválida. Por favor digite a nova senha.'
+          flash[:notice] = t('user.pwd_reset_confirmation_failed') 
           redirect_to :action => 'set_new_password', :id => user.reset_password_code
         end
       else
-        flash[:notice] = 'Você seguiu um link inválido. Por favor tente novamente.'
+        flash[:notice] = t('user.pwd_reset_invalid_link') 
         redirect_to :action => 'index'
       end
     end
@@ -271,7 +271,7 @@ class UserController < ApplicationController
       new_privileges ||= []
       @user.privileges = Privilege.find_all_by_id(new_privileges)
 
-      flash[:notice] = 'Papél atualizado.'
+      flash[:notice] = t('user.edit_role_updated') 
       redirect_to :action => 'profile',:id => @user.username
     end
   end
